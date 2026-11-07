@@ -1,8 +1,9 @@
-from fastapi import FastAPI, HTTPException
-from pydantic import BaseModel
-import psycopg2
 import os
 import time
+
+import psycopg2
+from fastapi import FastAPI, HTTPException
+from pydantic import BaseModel
 
 app = FastAPI(title="Todo API", version="0.1.0")
 
@@ -55,7 +56,7 @@ def init_db():
             print("Waiting for PostgreSQL...")
             time.sleep(2)
 
-    raise Exception("Could not connect to PostgreSQL")
+    raise RuntimeError("Could not connect to PostgreSQL")
 
 
 @app.on_event("startup")
