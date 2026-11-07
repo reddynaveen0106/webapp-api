@@ -4,3 +4,16 @@ dist
 __pycache__
 *.pyc
 actions-runner/
+
+# Python
+__pycache__/
+*.py[cod]
+venv/
+.venv/
+.coverage
+htmlcov/
+
+# Node
+node_modules/
+dist/
+.env.test
