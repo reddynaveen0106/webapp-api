@@ -120,3 +120,30 @@ jobs:
           name: webapp-api-${{ github.sha }}
           path: release/webapp-api-${{ github.sha }}.tar.gz
           if-no-files-found: error
+  deploy-test:
+    name: Deploy to Test Environment
+    needs:
+      - backend-test
+      - frontend-test
+      - publish-artifact
+
+    if: github.event_name == 'push' && github.ref == 'refs/heads/develop'
+
+    runs-on: self-hosted
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Deploy application
+        run: |
+          docker compose \
+          --env-file /home/naveen/webapp-api/.env.test \
+          -p webapp-api-test \
+          up -d --build
+
+      - name: Verify deployment
+        run: |
+          docker compose -p webapp-api-test ps
+          curl --fail http://localhost:18088/health
+          curl --fail --head http://localhost:18081
