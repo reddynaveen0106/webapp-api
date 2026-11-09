@@ -48,17 +48,14 @@ jobs:
             --cov=main \
             --cov-report=term \
             --cov-report=xml:coverage.xml
-       - name: Upload coverage report
-         uses: actions/upload-artifact@v4
-         if: always()
-         with:
-           name: backend-coverage-report
-           path: coverage.xml
-           if-no-files-found: ignore
 
-
-
-
+      - name: Upload coverage report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: backend-coverage-report
+          path: coverage.xml
+          if-no-files-found: ignore
 
   # 2. Frontend Lint and Build
   frontend-test:
@@ -104,11 +101,6 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: "22"
 
       - name: Download frontend build
         uses: actions/download-artifact@v4
@@ -180,3 +172,4 @@ jobs:
           curl --fail http://localhost:18088/health
           curl --fail --head http://localhost:18081
           curl --fail http://localhost:18081/api/todos
+
