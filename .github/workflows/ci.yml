@@ -41,17 +41,24 @@ jobs:
           ruff check backend/
 
       - name: Run backend tests with coverage
+        env:
+          PYTHONPATH: backend
         run: |
           pytest backend/tests/ \
-            --cov=backend \
+            --cov=main \
             --cov-report=term \
             --cov-report=xml:coverage.xml
+       - name: Upload coverage report
+         uses: actions/upload-artifact@v4
+         if: always()
+         with:
+           name: backend-coverage-report
+           path: coverage.xml
+           if-no-files-found: ignore
 
-      - name: Upload coverage report
-        uses: actions/upload-artifact@v4
-        with:
-          name: backend-coverage-report
-          path: coverage.xml
+
+
+
 
   # 2. Frontend Lint and Build
   frontend-test:
